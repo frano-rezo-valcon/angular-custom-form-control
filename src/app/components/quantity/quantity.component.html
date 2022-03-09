@@ -1,0 +1,17 @@
+<button (click)="writeValue(value - 1)">-</button>
+
+<input
+  [(ngModel)]="value"
+  (ngModelChange)="writeValue($event)"
+  [name]="uniqueName"
+  [id]="uniqueName"
+  [min]="min"
+  [max]="max"
+  type="number"
+/>
+
+<button (click)="writeValue(value + 1)">+</button>
+
+<span *ngIf="control && control.errors">
+  <ng-container *ngFor="let error of control.errors | keyvalue">{{ error.key }}: {{ error.value }}</ng-container>
+</span>

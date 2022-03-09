@@ -1,18 +1,13 @@
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CheckboxComponent, QuantityComponent } from './components';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
-  providers: [],
+  declarations: [AppComponent, CheckboxComponent, QuantityComponent],
+  imports: [BrowserModule, FormsModule, ReactiveFormsModule],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
