@@ -3,55 +3,63 @@
 <main>
   <!-- ###### CHECKBOX  ###### -->
   <section>
-    <h2>Regular:</h2>
+    <h2>Regular checkbox:</h2>
     <div>
-      <input type="checkbox" id="uniqueName" name="uniqueName" />
+      <input
+        [(ngModel)]="checkbox0"
+        (ngModelChange)="onRegularCheckboxChange($event)"
+        type="checkbox"
+        id="uniqueName"
+        name="uniqueName"
+      />
       <label for="uniqueName">Regular checkbox</label>
     </div>
   </section>
 
-  <!-- <section>
-    <h2>NgModel:</h2>
+  <section>
+    <h2>NgModel checkbox:</h2>
     <div>
       <app-checkbox
         [(ngModel)]="checkbox1"
         (ngModelChange)="onNgModelCheckboxChange($event)"
-        label="NgModel checkbox"
-      ></app-checkbox>
+        (change)="onChange($event)"
+      >
+        NgModel checkbox
+      </app-checkbox>
     </div>
-  </section> -->
+  </section>
 
-  <!-- <section>
-    <h2>FormControlName:</h2>
+  <section>
+    <h2>FormControlName checkbox:</h2>
     <form [formGroup]="form">
-      <app-checkbox formControlName="checkbox2" label="Form Control Name checkbox"></app-checkbox>
+      <app-checkbox formControlName="checkbox2">Form Control Name checkbox</app-checkbox>
     </form>
-  </section> -->
+  </section>
 
-  <!-- <section>
-    <h2>Emit:</h2>
+  <section>
+    <h2>Emit checkbox:</h2>
     <div>
-      <app-checkbox label="Emit checkbox"></app-checkbox>
+      <app-checkbox (checkboxChange)="onEmit($event)">Emit checkbox</app-checkbox>
     </div>
-  </section> -->
+  </section>
 
   <!-- ###### QUANTITY  ###### -->
   <!-- <section>
-    <h2>Regular:</h2>
+    <h2>Regular quantity:</h2>
     <div>
-      <app-quantity [(quantity)]="quantity0"></app-quantity>
+      <app-quantity [(quantity)]="quantity0" (quantityChange)="onRegularQuantityChange($event)"></app-quantity>
     </div>
   </section> -->
 
   <!-- <section>
-    <h2>NgModel:</h2>
+    <h2>NgModel quantity:</h2>
     <div>
       <app-quantity [(ngModel)]="quantity1" (ngModelChange)="onNgModelQuantityChange($event)"></app-quantity>
     </div>
   </section> -->
 
   <!-- <section>
-    <h2>FormControlName:</h2>
+    <h2>FormControlName quantity:</h2>
     <form [formGroup]="form">
       <app-quantity formControlName="quantity2"></app-quantity>
     </form>
@@ -59,10 +67,10 @@
 </main>
 
 <ul>
-  <!-- <li>Checkbox0: {{ checkbox0 }}</li> -->
-  <!-- <li>Checkbox1: {{ checkbox1 }}</li> -->
-  <!-- <li>Checkbox2: {{ checkbox2?.value }}</li> -->
-  <!-- <li>Checkbox3: {{ checkbox3 }}</li> -->
+  <li>Checkbox0: {{ checkbox0 }}</li>
+  <li>Checkbox1: {{ checkbox1 }}</li>
+  <li>Checkbox2: {{ checkbox2?.value }}</li>
+  <li>Checkbox3: {{ checkbox3 }}</li>
   <!-- <li>Quantity0: {{ quantity0 }}</li> -->
   <!-- <li>Quantity1: {{ quantity1 }}</li> -->
   <!-- <li>Quantity2: {{ quantity2?.value }}</li> -->

@@ -1,15 +1,16 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 
-import { uuid } from '../../utils';
+import { controlProvider, CustomControl } from '../../utils';
 
 @Component({
   selector: 'app-checkbox',
   templateUrl: './checkbox.component.html',
   styleUrls: ['./checkbox.component.scss'],
+  providers: [controlProvider(CheckboxComponent)],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CheckboxComponent {
-  @Input() label!: string;
+export class CheckboxComponent extends CustomControl<boolean> {
+  @Output() checkboxChange = new EventEmitter<boolean>();
 
-  uuid = uuid();
+  afterValueChange = (isChecked: boolean): void => this.checkboxChange.emit(isChecked);
 }
