@@ -44,26 +44,30 @@
   </section>
 
   <!-- ###### QUANTITY  ###### -->
-  <!-- <section>
+  <section>
     <h2>Regular quantity:</h2>
     <div>
       <app-quantity [(quantity)]="quantity0" (quantityChange)="onRegularQuantityChange($event)"></app-quantity>
     </div>
-  </section> -->
+  </section>
 
-  <!-- <section>
+  <section>
     <h2>NgModel quantity:</h2>
     <div>
-      <app-quantity [(ngModel)]="quantity1" (ngModelChange)="onNgModelQuantityChange($event)"></app-quantity>
+      <app-quantity
+        [(ngModel)]="quantity1"
+        (ngModelChange)="onNgModelQuantityChange($event)"
+        (change)="onQuantityChange($event)"
+      ></app-quantity>
     </div>
-  </section> -->
+  </section>
 
-  <!-- <section>
+  <section>
     <h2>FormControlName quantity:</h2>
     <form [formGroup]="form">
       <app-quantity formControlName="quantity2"></app-quantity>
     </form>
-  </section> -->
+  </section>
 </main>
 
 <ul>
@@ -71,7 +75,7 @@
   <li>Checkbox1: {{ checkbox1 }}</li>
   <li>Checkbox2: {{ checkbox2?.value }}</li>
   <li>Checkbox3: {{ checkbox3 }}</li>
-  <!-- <li>Quantity0: {{ quantity0 }}</li> -->
-  <!-- <li>Quantity1: {{ quantity1 }}</li> -->
-  <!-- <li>Quantity2: {{ quantity2?.value }}</li> -->
+  <li>Quantity0: {{ quantity0 }}</li>
+  <li>Quantity1: {{ quantity1 }}</li>
+  <li>Quantity2: {{ quantity2?.value }}</li>
 </ul>

@@ -1,26 +1,63 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Optional, Output } from '@angular/core';
+import { ControlContainer, FormControl, ValidationErrors } from '@angular/forms';
 
-import { uuid } from '../../utils';
+import { controlProvider, CustomControl, CustomValidator, validatorProvider } from '../../utils';
 
 @Component({
   selector: 'app-quantity',
   templateUrl: './quantity.component.html',
   styleUrls: ['./quantity.component.scss'],
+  providers: [controlProvider(QuantityComponent), validatorProvider(QuantityComponent)],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class QuantityComponent {
+export class QuantityComponent extends CustomControl<number> implements OnInit, CustomValidator {
   @Input() min = 1;
   @Input() max = 5;
-  @Input() quantity!: number;
+  @Input() formControlName?: string;
+  @Input() set quantity(value: number) {
+    this.value = value;
+  }
   @Output() quantityChange = new EventEmitter<number>();
 
-  uuid = uuid();
+  control?: FormControl;
+
+  constructor(@Optional() private _controlContainer: ControlContainer) {
+    super();
+  }
+
+  ngOnInit(): void {
+    if (this.formControlName) {
+      this.control = this._controlContainer?.control?.get(this.formControlName) as FormControl;
+    }
+  }
 
   decrement(): void {
-    this.quantityChange.emit(--this.quantity);
+    if (this.value <= this.min) {
+      return;
+    }
+    this.onValueChange(this.value - 1);
   }
 
   increment(): void {
-    this.quantityChange.emit(++this.quantity);
+    if (this.value >= this.max) {
+      return;
+    }
+    this.onValueChange(this.value + 1);
+  }
+
+  onValueChange(quantity: number): void {
+    if (this.quantityChange.observers.length) {
+      this.quantityChange.emit(quantity);
+    }
+    this.writeValue(quantity);
+  }
+
+  validate(control: FormControl): ValidationErrors | null {
+    if (control.value < this.min) {
+      return { min: 'Below min' };
+    } else if (control.value > this.max) {
+      return { max: 'Above max' };
+    }
+    return null;
   }
 }

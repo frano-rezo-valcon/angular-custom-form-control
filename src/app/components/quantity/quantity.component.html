@@ -1,5 +1,15 @@
 <button (click)="decrement()">-</button>
 
-<input [(ngModel)]="quantity" [name]="uuid" [id]="uuid" [min]="min" [max]="max" type="number" />
+<input
+  [(ngModel)]="value"
+  (ngModelChange)="onValueChange($event)"
+  [name]="uuid"
+  [id]="uuid"
+  [min]="min"
+  [max]="max"
+  type="number"
+/>
 
 <button (click)="increment()">+</button>
+
+<span *ngIf="control?.errors">{{ control?.errors | json }}</span>

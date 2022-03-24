@@ -15,36 +15,38 @@ export class AppComponent implements OnInit, OnDestroy {
   checkbox0 = false;
   checkbox1 = false;
   checkbox3 = false;
-  // quantity0 = 1;
-  // quantity1 = 1;
+  quantity0 = 1;
+  quantity1 = 1;
 
   form!: FormGroup;
 
   private _checkbox1 = this.checkbox1;
+  private _quantity1 = this.quantity1;
   private _destroy$ = new Subject<void>();
 
   get checkbox2(): FormControl {
     return this.form.get('checkbox2') as FormControl;
   }
 
-  // get quantity2(): FormControl {
-  //   return this.form.get('quantity2') as FormControl;
-  // }
+  get quantity2(): FormControl {
+    return this.form.get('quantity2') as FormControl;
+  }
 
   constructor(private _formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.form = this._formBuilder.group({
-      checkbox2: [false]
+      checkbox2: [false],
+      quantity2: [0]
     });
 
     this.checkbox2?.valueChanges
       .pipe(takeUntil(this._destroy$))
       .subscribe(v => console.log('formControl:', v, this.checkbox2?.value));
 
-    // this.quantity2?.valueChanges
-    //   .pipe(takeUntil(this._destroy$))
-    //   .subscribe(v => console.log('formControl:', v, this.quantity2?.value));
+    this.quantity2?.valueChanges
+      .pipe(takeUntil(this._destroy$))
+      .subscribe(v => console.log('formControl:', v, this.quantity2));
   }
 
   ngOnDestroy(): void {
@@ -84,5 +86,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onNgModelQuantityChange(quantity: number): void {
     console.log('ngModel quantity:', quantity);
+    if (quantity !== this._quantity1) {
+      this._quantity1 = quantity;
+      // do something...
+    }
+  }
+
+  onQuantityChange(event: Event): void {
+    console.log('change: ', (event.target as HTMLInputElement).value);
   }
 }
