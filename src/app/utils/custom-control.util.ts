@@ -2,6 +2,7 @@ import { Type } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { CustomProvider } from '../models';
+import { uuid } from './uuid.util';
 
 export function controlProvider<T>(component: Type<T>): CustomProvider<T, ControlValueAccessor> {
   return {
@@ -14,16 +15,7 @@ export function controlProvider<T>(component: Type<T>): CustomProvider<T, Contro
 export abstract class CustomControl<T> implements ControlValueAccessor {
   disabled!: boolean;
   value!: T;
-
-  // protected _value!: T;
-
-  // get value(): T {
-  //   return this._value;
-  // }
-
-  // set value(val: T) {
-  //   this.writeValue(val);
-  // }
+  uuid = uuid();
 
   onChanged = (__v: T): void => {};
   onTouched = (): void => {};

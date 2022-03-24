@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 
 import { controlProvider, CustomControl } from '../../utils';
 
@@ -10,13 +10,7 @@ import { controlProvider, CustomControl } from '../../utils';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CheckboxComponent extends CustomControl<boolean> {
-  @Input() label!: string;
-  @Input() uniqueName!: string; // Should be always unique (use 'uuid' library)
   @Output() checkboxChange = new EventEmitter<boolean>();
 
-  afterValueChange = (value: boolean) => {
-    if (this.checkboxChange.observers.length) {
-      this.checkboxChange.emit(value);
-    }
-  };
+  afterValueChange = (isChecked: boolean): void => this.checkboxChange.emit(isChecked);
 }

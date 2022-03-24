@@ -1,17 +1,15 @@
-<button (click)="writeValue(value - 1)">-</button>
+<button (click)="decrement()">-</button>
 
 <input
   [(ngModel)]="value"
-  (ngModelChange)="writeValue($event)"
-  [name]="uniqueName"
-  [id]="uniqueName"
+  (ngModelChange)="onValueChange($event)"
+  [name]="uuid"
+  [id]="uuid"
   [min]="min"
   [max]="max"
   type="number"
 />
 
-<button (click)="writeValue(value + 1)">+</button>
+<button (click)="increment()">+</button>
 
-<span *ngIf="control && control.errors">
-  <ng-container *ngFor="let error of control.errors | keyvalue">{{ error.key }}: {{ error.value }}</ng-container>
-</span>
+<span *ngIf="control?.errors">{{ control?.errors | json }}</span>

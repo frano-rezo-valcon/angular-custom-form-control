@@ -11,13 +11,17 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'Angular Custom Control Components';
+
   checkbox0 = false;
   checkbox1 = false;
   checkbox3 = false;
+  quantity0 = 1;
   quantity1 = 1;
+
   form!: FormGroup;
 
   private _checkbox1 = this.checkbox1;
+  private _quantity1 = this.quantity1;
   private _destroy$ = new Subject<void>();
 
   get checkbox2(): FormControl {
@@ -33,7 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.form = this._formBuilder.group({
       checkbox2: [false],
-      quantity2: [1]
+      quantity2: [0]
     });
 
     this.checkbox2?.valueChanges
@@ -42,7 +46,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.quantity2?.valueChanges
       .pipe(takeUntil(this._destroy$))
-      .subscribe(v => console.log('formControl:', v, this.quantity2?.value));
+      .subscribe(v => console.log('formControl:', v, this.quantity2));
   }
 
   ngOnDestroy(): void {
@@ -50,16 +54,18 @@ export class AppComponent implements OnInit, OnDestroy {
     this._destroy$.unsubscribe();
   }
 
+  // ############ CHECKBOX ############
+
   onRegularCheckboxChange(isChecked: boolean): void {
-    console.log('regular: ', isChecked, this.checkbox0);
+    console.log('regular checkbox: ', isChecked, this.checkbox0);
   }
 
   onNgModelCheckboxChange(isChecked: boolean): void {
-    console.log('ngModel: ', isChecked, this.checkbox1, this._checkbox1);
+    console.log('ngModel checkbox: ', isChecked, this.checkbox1, this._checkbox1);
     if (isChecked !== this._checkbox1) {
-      console.log('...is triggered...');
       this._checkbox1 = isChecked;
-      // ...do some magic
+      console.log('triggered...');
+      // api call...
     }
   }
 
@@ -69,9 +75,24 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onEmit(isChecked: boolean): void {
     console.log('emit: ', isChecked);
+    this.checkbox3 = isChecked;
+  }
+
+  // ############ QUANTITY ############
+
+  onRegularQuantityChange(quantity: number): void {
+    console.log('regular quantity:', quantity);
   }
 
   onNgModelQuantityChange(quantity: number): void {
     console.log('ngModel quantity:', quantity);
+    if (quantity !== this._quantity1) {
+      this._quantity1 = quantity;
+      // do something...
+    }
+  }
+
+  onQuantityChange(event: Event): void {
+    console.log('change: ', (event.target as HTMLInputElement).value);
   }
 }

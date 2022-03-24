@@ -1,9 +1,4 @@
-<input
-  [(ngModel)]="value"
-  (ngModelChange)="writeValue($event)"
-  [id]="uniqueName"
-  [name]="uniqueName"
-  [disabled]="disabled"
-  type="checkbox"
-/>
-<label [for]="uniqueName">{{ label }}</label>
+<input [(ngModel)]="value" (ngModelChange)="writeValue($event)" type="checkbox" [id]="uuid" [name]="uuid" />
+<label [for]="uuid">
+  <ng-content></ng-content>
+</label>

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Optional, Output } from '@angular/core';
 import { ControlContainer, FormControl, ValidationErrors } from '@angular/forms';
 
 import { controlProvider, CustomControl, CustomValidator, validatorProvider } from '../../utils';
@@ -10,38 +10,53 @@ import { controlProvider, CustomControl, CustomValidator, validatorProvider } fr
   providers: [controlProvider(QuantityComponent), validatorProvider(QuantityComponent)],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class QuantityComponent extends CustomControl<number> implements CustomValidator, AfterViewInit {
-  @Input() formControlName!: string;
-  @Input() uniqueName!: string;
+export class QuantityComponent extends CustomControl<number> implements OnInit, CustomValidator {
   @Input() min = 1;
   @Input() max = 5;
+  @Input() formControlName?: string;
+  @Input() set quantity(value: number) {
+    this.value = value;
+  }
+  @Output() quantityChange = new EventEmitter<number>();
 
-  control!: FormControl;
+  control?: FormControl;
 
-  constructor(@Optional() private _controlContainer: ControlContainer, private _cdRef: ChangeDetectorRef) {
+  constructor(@Optional() private _controlContainer: ControlContainer) {
     super();
   }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     if (this.formControlName) {
-      this.control = this._controlContainer.control?.get(this.formControlName) as FormControl;
-      this._cdRef.detectChanges(); // In case that initial input is invalid
+      this.control = this._controlContainer?.control?.get(this.formControlName) as FormControl;
     }
   }
 
-  // decrement(): void {
-  //   super.writeValue(--this.value);
-  // }
+  decrement(): void {
+    if (this.value <= this.min) {
+      return;
+    }
+    this.onValueChange(this.value - 1);
+  }
 
-  // increment(): void {
-  //   super.writeValue(++this.value);
-  // }
+  increment(): void {
+    if (this.value >= this.max) {
+      return;
+    }
+    this.onValueChange(this.value + 1);
+  }
+
+  onValueChange(quantity: number): void {
+    if (this.quantityChange.observers.length) {
+      this.quantityChange.emit(quantity);
+    }
+    this.writeValue(quantity);
+  }
 
   validate(control: FormControl): ValidationErrors | null {
-    if (control.value > 5) {
-      return { max: 'Max error' };
-    } else if (control.value < 1) {
-      return { min: 'Min error' };
+    if (control.value < this.min) {
+      return { min: 'Below min' };
+    } else if (control.value > this.max) {
+      return { max: 'Above max' };
     }
     return null;
   }
